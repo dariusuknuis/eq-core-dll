@@ -834,6 +834,11 @@ void InitHooks()
 		PatchA((DWORD*)var, "\x90\x90\x90\x90\x90\x90", 6);
 	}
 
+	if (isAllowBrownSkeletonsEnabled) {
+		var = (((DWORD)0x00594B09 - 0x400000) + baseAddress);
+		PatchA((DWORD*)var, "\xEB", 1);
+	}
+
 	var = (((DWORD)0x004C3250 - 0x400000) + baseAddress);
 	EzDetour((DWORD)var, HandleWorldMessage_Detour, HandleWorldMessage_Trampoline);
 

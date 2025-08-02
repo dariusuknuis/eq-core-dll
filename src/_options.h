@@ -64,6 +64,9 @@ bool isReportHardwareAddressEnabled = false;
 // This allows you to bypass an error of "The result of this combine would be both NO TRADE and unusable by you.". If you don't get this error, unlikely needed.
 bool isAllowIllegalAugmentsEnabled = false;
 
+// isAllowBrownSkeletonsEnabled if set to true will allow race 60 skeletons to have materials other than 0.
+bool isAllowBrownSkeletonsEnabled = true;
+
 // ***** NPC *******
 
 // areCustomNPCsEnabled if set to true will allow the NPCs defined in NPCs[] to be injected in game
