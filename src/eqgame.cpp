@@ -839,6 +839,11 @@ void InitHooks()
 		PatchA((DWORD*)var, "\xEB", 1);
 	}
 
+	if (isAllowAllElementalsEnabled) {
+		var = (((DWORD)(0x0048F668 - 0x400000)) + baseAddress);
+		PatchA((BYTE*)var, "\xE9\x14\x01\x00\x00\x90", 6);
+	}
+
 	var = (((DWORD)0x004C3250 - 0x400000) + baseAddress);
 	EzDetour((DWORD)var, HandleWorldMessage_Detour, HandleWorldMessage_Trampoline);
 

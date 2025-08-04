@@ -67,6 +67,9 @@ bool isAllowIllegalAugmentsEnabled = false;
 // isAllowBrownSkeletonsEnabled if set to true will allow race 60 skeletons to have materials other than 0.
 bool isAllowBrownSkeletonsEnabled = true;
 
+// isAllowAllElementalsEnabled if set to true will allow the race 75 model to load when UseLuclinElemetals is set to TRUE.
+bool isAllowAllElementalsEnabled = true;
+
 // ***** NPC *******
 
 // areCustomNPCsEnabled if set to true will allow the NPCs defined in NPCs[] to be injected in game
