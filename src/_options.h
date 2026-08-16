@@ -70,6 +70,10 @@ bool isAllowBrownSkeletonsEnabled = true;
 // isAllowAllElementalsEnabled if set to true will allow the race 75 model to load when UseLuclinElemetals is set to TRUE.
 bool isAllowAllElementalsEnabled = true;
 
+// Allows non-Drakkin races to use up to eight tattoo and detail selections.
+// The race still needs valid attachment models and A_ layer resources.
+bool isAllowAllRaceDrakkinCustomizationEnabled = true;
+
 // ***** NPC *******
 
 // areCustomNPCsEnabled if set to true will allow the NPCs defined in NPCs[] to be injected in game

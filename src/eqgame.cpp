@@ -616,6 +616,32 @@ DETOUR_TRAMPOLINE_EMPTY(unsigned char __fastcall SendMessage_Trampoline(DWORD*, 
 
 DETOUR_TRAMPOLINE_EMPTY(unsigned char __fastcall SetDeviceGammaRamp_Trampoline(HDC hdc, LPVOID lpRamp));
 
+//Let Non-drakkin EQG PC-races use tattoo and detail
+
+#define TATTOO_DATA_COUNT_ADDRESS 0x008CEC20
+#define DETAIL_DATA_COUNT_ADDRESS 0x008CEC40
+
+DETOUR_TRAMPOLINE_EMPTY(int __fastcall TattooDataCount_Trampoline(DWORD* thisptr, DWORD edx, DWORD* key));
+DETOUR_TRAMPOLINE_EMPTY(int __fastcall DetailDataCount_Trampoline(DWORD* thisptr, DWORD edx, DWORD* key));
+
+int __fastcall TattooDataCount_Detour(DWORD* thisptr, DWORD edx, DWORD* key)
+{
+	if (key && key[0] == 1)
+		return 8;
+
+	return TattooDataCount_Trampoline(thisptr, edx, key);
+}
+
+int __fastcall DetailDataCount_Detour(DWORD* thisptr, DWORD edx, DWORD* key)
+{
+	if (key && key[0] == 1)
+		return 8;
+
+	return DetailDataCount_Trampoline(thisptr, edx, key);
+}
+
+//Hooks
+
 signed int ProcessGameEvents_Hook()
 {
    DWORD oldTimeGetTimeVal = 0;
@@ -842,6 +868,14 @@ void InitHooks()
 	if (isAllowAllElementalsEnabled) {
 		var = (((DWORD)(0x0048F668 - 0x400000)) + baseAddress);
 		PatchA((BYTE*)var, "\xE9\x14\x01\x00\x00\x90", 6);
+	}
+
+	if (isAllowAllRaceDrakkinCustomizationEnabled) {
+		DWORD tattooDataCountAddress = ((TATTOO_DATA_COUNT_ADDRESS - 0x400000) + baseAddress);
+		DWORD detailDataCountAddress = ((DETAIL_DATA_COUNT_ADDRESS - 0x400000) + baseAddress);
+
+		EzDetour(tattooDataCountAddress, TattooDataCount_Detour, TattooDataCount_Trampoline);
+		EzDetour(detailDataCountAddress, DetailDataCount_Detour, DetailDataCount_Trampoline);
 	}
 
 	var = (((DWORD)0x004C3250 - 0x400000) + baseAddress);
