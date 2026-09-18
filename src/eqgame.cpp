@@ -624,9 +624,35 @@ DETOUR_TRAMPOLINE_EMPTY(unsigned char __fastcall SetDeviceGammaRamp_Trampoline(H
 DETOUR_TRAMPOLINE_EMPTY(int __fastcall TattooDataCount_Trampoline(DWORD* thisptr, DWORD edx, DWORD* key));
 DETOUR_TRAMPOLINE_EMPTY(int __fastcall DetailDataCount_Trampoline(DWORD* thisptr, DWORD edx, DWORD* key));
 
+static bool IsNonDrakkinPlayerRace(DWORD race)
+{
+	switch (race)
+	{
+		case 1:   // Human
+		case 2:   // Barbarian
+		case 3:   // Erudite
+		case 4:   // Wood Elf
+		case 5:   // High Elf
+		case 6:   // Dark Elf
+		case 7:   // Half Elf
+		case 8:   // Dwarf
+		case 9:   // Troll
+		case 10:  // Ogre
+		case 11:  // Halfling
+		case 12:  // Gnome
+		case 128: // Iksar
+		case 130: // Vah Shir
+		case 330: // Froglok
+			return true;
+
+		default:
+			return false;
+	}
+}
+
 int __fastcall TattooDataCount_Detour(DWORD* thisptr, DWORD edx, DWORD* key)
 {
-	if (key && key[0] == 1)
+	if (key && key[0] != 522 && IsNonDrakkinPlayerRace(key[0]))
 		return 8;
 
 	return TattooDataCount_Trampoline(thisptr, edx, key);
@@ -634,7 +660,7 @@ int __fastcall TattooDataCount_Detour(DWORD* thisptr, DWORD edx, DWORD* key)
 
 int __fastcall DetailDataCount_Detour(DWORD* thisptr, DWORD edx, DWORD* key)
 {
-	if (key && key[0] == 1)
+	if (key && key[0] != 522 && IsNonDrakkinPlayerRace(key[0]))
 		return 8;
 
 	return DetailDataCount_Trampoline(thisptr, edx, key);
